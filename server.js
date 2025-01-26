@@ -6,11 +6,10 @@ const path = require('path');
 
 const app = express();
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://leiden-gpa.vercel.app/'],
-  methods: ['GET', 'POST'],
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
 };
-
 app.use(cors(corsOptions));
 app.use(fileUpload());
 app.use(express.static('public'));
