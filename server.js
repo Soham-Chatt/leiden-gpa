@@ -5,7 +5,13 @@ const pdf = require('pdf-parse');
 const path = require('path');
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: ['http://localhost:3000', 'https://leiden-gpa.vercel.app/'],
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+};
+
+app.use(cors(corsOptions));
 app.use(fileUpload());
 app.use(express.static('public'));
 
