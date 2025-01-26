@@ -1,4 +1,8 @@
 let expandedYears = new Set();
+const API_BASE_URL =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://leiden-gpa.vercel.app';
 
 async function handleSubmit(e) {
   e.preventDefault();
@@ -14,7 +18,7 @@ async function handleSubmit(e) {
   submitButton.textContent = 'Processing...';
 
   try {
-    const res = await fetch('http://localhost:3000/parse-pdf', {
+    const res = await fetch(`${API_BASE_URL}/parse-pdf`, {
       method: 'POST',
       body: formData,
     });
