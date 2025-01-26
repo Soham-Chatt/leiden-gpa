@@ -55,8 +55,8 @@ function calculateWeightedGPA(text) {
     if (/Honours College|Extracurricular/i.test(line)) {
       inBachelorSection = false;
       currentSection = line.trim()
-        .replace('ComponentsExam dateGradeECTSLevel', '')
-        .replace('bsc computer science', '')
+        .replace(/ComponentsExam dateGradeECTSLevel/i, '')
+        .replace(/(?:bachelor|master|bsc|msc|ba|ma)(?:\s+(?:of|in|of science|of arts))?\s+[^"]*/i, '')
         .trim();
       continue;
     }
