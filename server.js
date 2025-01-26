@@ -5,12 +5,8 @@ const pdf = require('pdf-parse');
 const path = require('path');
 
 const app = express();
-const corsOptions = {
-  origin: '*',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
-};
-app.use(cors(corsOptions));
+
+app.use(cors());
 app.use(fileUpload());
 app.use(express.static('public'));
 
