@@ -169,8 +169,40 @@ function renderResults(result = null) {
       : ''
   }
       </div>
+      
+    ${result.extracurricular.length > 0 ? `
+  <div class="space-y-4 mt-6">
+    <div class="flex justify-between items-center">
+      <h3 class="text-lg sm:text-xl font-semibold">Extracurricular Activities</h3>
+      <span class="text-l text-gray-400">Total: ${result.totalExtracurricularECTS} ECTS</span>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-700 rounded-lg">
+        <thead class="bg-gray-800 text-gray-300">
+          <tr>
+            <th class="p-3 text-left">Course</th>
+            <th class="p-3 text-right">Grade</th>
+            <th class="p-3 text-right">ECTS</th>
+            <th class="p-3 text-right">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-700 text-gray-400">
+          ${result.extracurricular.map(course => `
+            <tr class="hover:bg-gray-700/50">
+              <td class="p-3">${course.name}</td>
+              <td class="p-3 text-right font-mono">${course.grade}</td>
+              <td class="p-3 text-right">${course.ects}</td>
+              <td class="p-3 text-right text-gray-400">${course.status}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+` : ''}
+      
       <div class="mt-6 text-center text-xs sm:text-sm text-gray-400">
-        <p><b>Supported PDF Format:</b> Transcript from uSis (English)</p>
+        <p><b>Supported PDF Format:</b> Transcript from uSis (English or Dutch)</p>
         <p><i>Your uploaded transcripts are <b>never</b> saved.</i></p>
       </div>
     </main>
@@ -224,7 +256,7 @@ function initialRender() {
         </form>
       </div>
       <div class="mt-6 text-center text-xs sm:text-sm text-gray-400">
-        <p><b>Supported PDF Format:</b> Transcript from uSis (English)</p>
+        <p><b>Supported PDF Format:</b> Transcript from uSis (English or Dutch)</p>
         <p><i>Your uploaded transcripts are <b>never</b> saved.</i></p>
       </div>
     </main>

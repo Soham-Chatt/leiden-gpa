@@ -25,9 +25,9 @@ app.post('/parse-pdf', async (req, res) => {
 });
 
 function calculateWeightedGPA(text) {
-  const mainStudy = ['bachelor year', 'master year'];
-  const programMatch = text.match(/Exam components ([^"\n]+)/);
-  const program = programMatch ? programMatch[1].trim() : 'Unknown Program';
+  const mainStudy = ['bachelor year', 'master year', 'bachelor jaar', 'master jaar'];
+  const programMatch = text.match(/(Exam\s+components|Examenonderdelen)\s*[:"]?\s*([^"\n]+)/);
+  const program = programMatch ? programMatch[2].trim() : 'Unknown Program';
   const lines = text.split('\n');
   let totalECTS = 0;
   let excludedECTS = 0;
@@ -41,22 +41,22 @@ function calculateWeightedGPA(text) {
 
   const lineRegex = new RegExp([
     '^(.+?)\\s+(\\d{2}-\\d{2}-\\d{4})',
-    '(Passed\\d{1,2}\\d{3}|\\d{1,2}(?:,\\d)?\\d{1,2}\\d{3})$'
+    '((?:Passed|Voldaan)\\d{1,2}\\d{3}|\\d{1,2}(?:,\\d)?\\d{1,2}\\d{3})$'
   ].join(''));
 
   for (const line of lines) {
     if (mainStudy.some(study => line.toLowerCase().includes(study))) {
       inBachelorSection = true;
-      const yearMatch = line.match(/(?:bachelor|master) year (\d+)/i);
-      currentYear = yearMatch ? yearMatch[1] : 'Unknown';
+      const yearMatch = line.match(/(?:bachelor|master)\s+(?:year|jaar)\s*(\d+)|(?:bachelor|master)jaar\s*(\d+)/i);
+      currentYear = yearMatch ? (yearMatch[1] || yearMatch[2]) : 'Unknown';
       continue;
     }
 
-    if (/Honours College|Extracurricular/i.test(line)) {
+    if (/Honours\s+College|\bExtracurricula(?:i)?r\b/i.test(line)) {
       inBachelorSection = false;
       currentSection = line.trim()
-        .replace(/ComponentsExam dateGradeECTSLevel/i, '')
-        .replace(/(?:bachelor|master|bsc|msc|ba|ma)(?:\s+(?:of|in|of science|of arts))?\s+[^"]*/i, '')
+        .replace(/(?:Components\s*Exam|Examenonderdelen)\s*date\s*Grade\s*ECTS\s*Level/i, '')
+        .replace(/(?:bachelor|master|bsc|msc|ba|ma)(?:\s+(?:of|in|of science|of arts|der))?\s+[^"]*/i, '')
         .trim();
       continue;
     }
@@ -67,9 +67,10 @@ function calculateWeightedGPA(text) {
     const [, courseName, examDate, gradeBlock] = match;
     let grade = null, ects = null, level = null;
 
-    if (gradeBlock.startsWith('Passed')) {
+    if (gradeBlock.startsWith('Passed') || gradeBlock.startsWith('Voldaan')) {
       grade = 'Passed';
-      ects = parseInt(gradeBlock.slice(6, -3), 10);
+      const startPos = gradeBlock.startsWith('Passed') ? 6 : (gradeBlock.startsWith('Voldaan') ? 7 : 1);
+      ects = parseInt(gradeBlock.slice(startPos, -3), 10);
       level = parseInt(gradeBlock.slice(-3), 10);
     } else {
       const gradeMatch = gradeBlock.match(/(\d{1,2}(?:,\d)?)(\d{1,2})(\d{3})/);
