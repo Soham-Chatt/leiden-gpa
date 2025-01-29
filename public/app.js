@@ -113,7 +113,7 @@ function renderResults(result = null) {
           <div class="mt-8 space-y-6">
             <div class="bg-gray-800 rounded-lg p-4">
               <p class="text-sm sm:text-base text-gray-400">Program: ${result.program}</p>
-              <h2 class="text-xl sm:text-2xl font-bold mt-2">CGPA: ${Number(result.cgpa).toFixed(1)}</h2>
+              <h2 class="text-xl sm:text-2xl font-bold mt-2">CGPA: ${Number(result.cgpa).toFixed(2)}</h2>
               <p class="text-sm sm:text-base text-gray-300">
                 Total ECTS: ${result.totalECTS}
                 ${
