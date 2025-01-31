@@ -88,8 +88,11 @@ function renderForm() {
 function renderDisclaimer() {
   return `
     <div class="mt-6 text-center text-xs sm:text-sm text-gray-400">
-      <p><b>Experimental:</b> May contain bugs. Always verify the results.</p>
-      <p><i>Your uploaded transcripts are <b>never</b> saved.</i></p>
+      <p><b>Experimental:</b> May contain bugs, always verify the results</p>
+      <p><i>Your uploaded transcripts are <b>never</b> saved</i></p>
+      <br>
+      <p><i>Not affiliated with Leiden University</i></p>
+      <p>Made by <u><a href="https://www.soham.info/">Soham</a></u></p>
     </div>
   `;
 }
